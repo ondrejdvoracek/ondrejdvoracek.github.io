@@ -168,7 +168,7 @@ var app = new Vue({
                 cutting_width;
 
             // Round to one decimal place and set it.
-            this.cutting_force = cutting_force.toFixed(10);
+            this.cutting_force = cutting_force.toFixed(1);
         },
     },
 });
