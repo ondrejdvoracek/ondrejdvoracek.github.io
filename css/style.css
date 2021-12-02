@@ -1,0 +1,36 @@
+body {
+    background-color: rgb(240, 240, 240) !important;
+}
+
+#content {
+    width: 40%;
+    height: 100%;
+    margin-top: 25px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#input {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+p {
+    font-style: italic;
+    font-weight: lighter;
+}
+
+#result {
+    font-weight: bold;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 25px;
+    background-color: wheat;
+    text-align: center;
+}

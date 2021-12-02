@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cutting force calculator</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Vue.js: production version, optimized for size and speed -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="content">
+        <div id="app">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div id="input">
+                        <p>Moisture content [%]</p>
+                        <input type="number" v-model="moisture_content" class="form-control" id="moisture_content">
+                        <small>
+                            <span v-if="moisture_content < 0" class="text-primary">0 [%] is the minimum moisture content. A value of 0 [%] has been taken for the calculation.</span>
+                            <span v-else-if="moisture_content > 32" class="text-primary">32 [%] is the maximum moisture content the model can work with. A value of 32 [%] has been taken for the calculation.</span>
+                            <span v-else-if="moisture_content === ''" class="text-danger">This field cannot remain empty. Specify a value between 0 and 32.</span>
+                            <span v-else class="text-success">You are ready to go!</span>
+                        </small>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div id="input">
+                        <p>Cutting fibre angle [°]</p>
+                        <input type="number" v-model="cutting_fibre_angle" class="form-control" id="cutting_fibre_angle">
+                        <small>
+                            <span v-if="cutting_fibre_angle < 0" class="text-primary">0 [°] is the minimum fibre angle. A value of 0 [°] has been taken for the calculation.</span>
+                            <span v-else-if="cutting_fibre_angle > 90" class="text-primary">90 [°] is the maximum fibre angle the model can work with. A value of 90 [°] has been taken for the calculation.</span>
+                            <span v-else-if="cutting_fibre_angle === ''" class="text-danger">This field cannot remain empty. Specify a value between 0 and 90.</span>
+                            <span v-else class="text-success">You are ready to go!</span>
+                        </small>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div id="input">
+                        <p>Cutting velocity [m/s]</p>
+                        <input type="number" v-model="cutting_velocity" class="form-control" id="cutting_velocity">
+                        <small>
+                            <span v-if="cutting_velocity < 5 && cutting_velocity.length != 0" class="text-primary">5 [m/s] is the minimum cutting velocity. A value of 5 [m/s] has been taken for the calculation.</span>
+                            <span v-else-if="cutting_velocity > 80" class="text-primary">80 [m/s] is the maximum cutting velocity the model can work with. A value of 80 [m/s] has been taken for the calculation.</span>
+                            <span v-else-if="cutting_velocity.length === 0" class="text-danger">This field cannot remain empty. Specify a value between 5 and 80.</span>
+                            <span v-else class="text-success">You are ready to go!</span>
+                        </small>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div id="input">
+                        <p>Density [kg/cu m]</p>
+                        <input type="number" v-model="density" class="form-control" id="density">
+                        <small>
+                            <span v-if="density < 600 && density.length != 0" class="text-primary">600 [kg/cu m] is the minimum density. A value of 600 [kg/cu m] has been taken for the calculation.</span>
+                            <span v-else-if="density > 800" class="text-primary">800 [kg/cu m] is the maximum density the model can work with. A value of 800 [kg/cu m] has been taken for the calculation.</span>
+                            <span v-else-if="density.length === 0" class="text-danger">This field cannot remain empty. Specify a value between 600 and 800.</span>
+                            <span v-else class="text-success">You are ready to go!</span>
+                        </small>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div id="input">
+                        <p>Uncut chip thickness [mm]</p>
+                        <input type="number" v-model="uncut_chip_thickness" class="form-control" step=0.01 id="uncut_chip_thickness">
+                        <small>
+                            <span v-if="uncut_chip_thickness < 0.01 && uncut_chip_thickness.length != 0" class="text-primary">0.01 [mm] is the minimum uncut chip thickness. A value of 0.01 [mm] has been taken for the calculation.</span>
+                            <span v-else-if="uncut_chip_thickness > 0.6" class="text-primary">0.6 [mm] is the maximum uncut chip thickness the model can work with. A value of 0.6 [mm] has been taken for the calculation.</span>
+                            <span v-else-if="uncut_chip_thickness.length === 0" class="text-danger">This field cannot remain empty. Specify a value between 0.01 and 0.6.</span>
+                            <span v-else class="text-success">You are ready to go!</span>
+                        </small>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div id="input">
+                        <p>Cutting width [mm]</p>
+                        <input type="number" v-model="cutting_width" class="form-control" id="cutting_width">
+                        <small>
+                            <span v-if="cutting_width < 1 && cutting_width.length != 0" class="text-primary">1 [mm] is the minimum cutting width. A value of 1 [mm] has been taken for the calculation.</span>
+                            <span v-else-if="cutting_width > 30" class="text-primary">30 [mm] is the maximum cutting width the model can work with. A value of 30 [mm] has been taken for the calculation.</span>
+                            <span v-else-if="cutting_width.length === 0" class="text-danger">This field cannot remain empty. Specify a value between 0.01 and 0.6.</span>
+                            <span v-else class="text-success">You are ready to go!</span>
+                        </small>
+                    </div>
+                </li>
+            </ul>
+            <li class="list-group-item list-group-item-primary">
+                <div id="input">
+                    <span id="result">Result [N]: {{ cutting_force }}</span>
+                </div>
+            </li>
+        </div>
+    </div>
+    <div id="footer">
+        <p>Ondrej Dvoracek, Daniel Lechowicz, Franz Haas & Stephan Frybort (2021) Cutting force analysis of oak for the development of a cutting force model, Wood Material Science & Engineering, DOI: 10.1080/17480272.2021.1955296</p>
+    </div>
+
+    <!-- My scripts -->
+    <script src="js/calculate.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+
+</html>
