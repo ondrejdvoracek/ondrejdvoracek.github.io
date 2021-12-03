@@ -87,7 +87,7 @@
                         <small>
                             <span v-if="cutting_width < 1 && cutting_width.length != 0" class="text-primary">1 [mm] is the minimum cutting width. A value of 1 [mm] has been taken for the calculation.</span>
                             <span v-else-if="cutting_width > 30" class="text-primary">30 [mm] is the maximum cutting width the model can work with. A value of 30 [mm] has been taken for the calculation.</span>
-                            <span v-else-if="cutting_width.length === 0" class="text-danger">This field cannot remain empty. Specify a value between 0.01 and 0.6.</span>
+                            <span v-else-if="cutting_width.length === 0" class="text-danger">This field cannot remain empty. Specify a value between 1 and 30.</span>
                             <span v-else class="text-success">You are ready to go!</span>
                         </small>
                     </div>
